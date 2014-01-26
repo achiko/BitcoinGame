@@ -36,8 +36,8 @@ var client = new bitcoin.Client({
           host: 'localhost',
           //port: 8332,
           port: 18332,
-          user: 'bitcoinrpc',
-          pass: '3VXSDdC69sQnd9c6xur1Nx77S7gyFwcc3ZFmJDfyt6cM'
+          user: 'testuser',
+          pass: 'testpasss'
  });
 
 
@@ -46,9 +46,9 @@ var client = new bitcoin.Client({
 var EXPRESS_SID_KEY = 'user.sid';
 
 // We define a secret string used to crypt the cookies sent by Express
-var COOKIE_SECRET = 'mysecretjaja';
+var COOKIE_SECRET = 'testsecret';
 
-var sessionKey = '55654654588546459897ekjewlewfewf';
+var sessionKey = '5565465458854645989788829292929';
 var memoryStore = new MongoStore({ db: 'sessions', url: 'mongodb://localhost/sessions' });
 
 
@@ -213,30 +213,6 @@ app.get('/newgame', function(req, res){
           res.send('Ok');
 
   });
-
-///////  To  Do remooove  
-//--  Temporary Admin 
-app.get('/moQLBPTtGV6xZeS1sVWsWykU83YpWEQWAR', function(req, res){
-
-        var query = Models.transactions.find();
-
-        return  query.exec(function(error, docs){
-
-              if(!error){
-                return res.send(docs);
-              }else{
-                return console.log(err);
-              }  
-        });
-
-  });
-
-
-app.get('/0db7b9d5e0d9b930c7e2c374ff4a5e56857ec3c79ddb142bd0033b4c30f35253', function(req, res) {
-
-    res.sendfile('web/admin.html')
-
-});
 
 
 //-- Socket !
