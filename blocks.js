@@ -19,7 +19,7 @@ var client = new bitcoin.Client({
           host: 'localhost',
           //port: 8332,
           port: 18332,
-          user: 'rpcuser',
+          user: 'testuser',
           pass: 'testpass'
  });
 
