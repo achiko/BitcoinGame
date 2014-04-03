@@ -1,4 +1,4 @@
-BitcoinGame www.PlaZa.co
+BitcoinGame www.PlayZa.co
 ===========
 
 Node Bitcoin
