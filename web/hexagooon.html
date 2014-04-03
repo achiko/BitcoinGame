@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+ 
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+ 
+		html, body {
+			padding	: 0;
+			margin	: 0;
+		}
+ 
+		#page {
+			width							: 80%;
+			padding						: 10%;
+			background-color	: #373737;
+		}
+ 
+		.hex {
+			float					: left;
+			margin-left		: 3px;
+			margin-bottom	: -4px;
+		}
+		
+		.hex .top {
+			width: 0;
+			border-bottom	: 7px solid #6C6;
+			border-left		: 13px solid transparent;
+			border-right	: 13px solid transparent;
+		}
+		
+		.hex .middle {
+			width				: 26px;
+			height			: 14px;
+			background	: #6C6;
+		}
+ 
+		.hex .bottom {
+			width					: 0;
+			border-top		: 7px solid #6C6;
+			border-left		: 13px solid transparent;
+			border-right	: 13px solid transparent;
+		}
+		
+		.hex-row {
+			clear	: left;
+		}
+		
+		.hex-row.even {
+			margin-left	: 14px;
+		}
+ 
+		.hex.y .top {
+			border-bottom-color: #ffb500;
+		}
+ 
+		.hex.y .middle {
+			background-color: #ffb500;
+		}
+ 
+		.hex.y .bottom {
+			border-top-color: #ffb500;
+		}
+ 
+		.hex.m .top {
+			border-bottom-color: #ff0025
+		}
+ 
+		.hex.m .middle {
+			background-color: #ff0025;
+		}
+ 
+		.hex.m .bottom {
+			border-top-color: #ff0025
+		}
+ 
+		.hex.g .top {
+			border-bottom-color: #ccc
+		}
+ 
+		.hex.g .middle {
+			background-color: #ccc;
+		}
+ 
+		.hex.g .bottom {
+			border-top-color: #ccc
+		}
+ 
+ 
+	</style>
+	<script>
+		
+		var page;
+		window.onload = function() {
+			page = document.getElementById('page');
+ 
+			for(var i = 0; i < 33; i += 1) {
+				var row = '<div class="hex-row ' + (i % 2 !== 0 ? ' even"' : '"') + '>';
+ 
+				for(var j = 0; j < 30; j += 1) {
+ 
+					row +=  '<div class="hex">' +
+									'<div class="top"></div>' +
+									'<div class="middle"></div>' +
+									'<div class="bottom"></div>' +
+									'</div>';
+				}
+ 
+				row += '</div>';
+				page.innerHTML += row;
+			}
+ 
+		}
+ 
+		window.onresize = function() {
+			console.log(page.offsetWidth);
+		}
+ 
+	</script>
+</head>
+<body>
+ 
+	<div id="page"></div>
+ 
+</body>
+</html>

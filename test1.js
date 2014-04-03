@@ -17,10 +17,10 @@ var logger = new (winston.Logger)({
 var client = new bitcoin.Client({
 
           host: 'localhost',
-          port: 8332,
-          //port: 18332,
-          user: 'testuser',
-          pass: 'test'
+          //port: 8332,
+          port: 18332,
+          user: 'bitcoinrpc',
+          pass: '3VXSDdC69sQnd9c6xur1Nx77S7gyFwcc3ZFmJDfyt6cM'
  });
 
 
@@ -34,9 +34,11 @@ var client = new bitcoin.Client({
                     client.cmd('getaddressesbyaccount', acc, function(err, addr){
                         
                         client.cmd('getbalance', acc, 0, function(err, balance){
-                        
-                              console.log('Acc:  ' + acc , 'Address: ' + addr , 'Amount: ' + amt, 'Balance: ', balance);                            
-                        
+                              
+                              if(balance !== 0)
+                              {
+                                console.log('Acc:  ' + acc , 'Address: ' + addr , 'Amount: ' + amt, 'Balance: ', balance);                            
+                              }
                               //        obj.push({ 
                               //             "Acc"     : acc,
                               //             "Address" : addr,

@@ -1,5 +1,4 @@
 
-.icon-dollar:before { content: '\e801'; } /* '' */
-.icon-money:before { content: '\e800'; } /* '' */
-.icon-money-1:before { content: '\e802'; } /* '' */
-.icon-wallet:before { content: '\e803'; } /* '' */
+.icon-bitcoin:before { content: '\e800'; } /* '' */
+.icon-dollar:before { content: '\e802'; } /* '' */
+.icon-bitcoin-1:before { content: '\e801'; } /* '' */

@@ -18,7 +18,6 @@ var app = express()
   , io = require('socket.io').listen(server);
 
 
-//io.set('log level', 1); // reduce logging
 
 
 //-- My requirements 
@@ -29,15 +28,14 @@ var trans = require('./lib/Payments/transactionfinder.js');
 var withdraw = require('./lib/Payments/withdraw.js');
 
 
-
 //-- generate Bitocin Adress
 var client = new bitcoin.Client({
 
           host: 'localhost',
-          //port: 8332,
-          port: 18332,
+          //port: 8332, //-- For  real bitcoins
+          port: 18332,  //-- For Testnet
           user: 'testuser',
-          pass: 'testpasss'
+          pass: 'testpass'
  });
 
 
@@ -46,18 +44,19 @@ var client = new bitcoin.Client({
 var EXPRESS_SID_KEY = 'user.sid';
 
 // We define a secret string used to crypt the cookies sent by Express
-var COOKIE_SECRET = 'testsecret';
+var COOKIE_SECRET = 'mysecretjaja';
 
-var sessionKey = '5565465458854645989788829292929';
+var sessionKey = '56464654654654898979879879879';
 var memoryStore = new MongoStore({ db: 'sessions', url: 'mongodb://localhost/sessions' });
 
 
 app.configure(function() {
-    app.use(express.static(__dirname + '/web'));
     app.use(express.cookieParser(COOKIE_SECRET));
-    app.use(express.session( { secret: sessionKey, store: memoryStore } ));
+    app.use(express.session( { secret: sessionKey, store: memoryStore, cookie: { domain: '.playza.co'} } ));
     app.use(express.bodyParser());
-    //app.use(express.logger());
+    app.use(express.static(__dirname + '/web'));
+    //app.use(express.favicon(__dirname + '/web/img/favicon.ico'));
+    app.use(express.logger());
     app.use(app.router);
 });
 
@@ -69,7 +68,6 @@ var db = mongoose.connection;
 
 //-- DB Models
 var Models = require('./lib/Models/Models.js')(mongoose); 
-
 
 
 ///// Bets data /////
@@ -102,55 +100,44 @@ StartnewGame(function(err, result){
 // Router
 app.get('/', function(req, res)
    {  
+
+          console.log("Requested Session::::::::: ", req.session.uid);
+
+          var log = fs.createWriteStream('session.txt', {'flags': 'a'}); 
+          log.end(util.inspect(req.session, false, null) + "\n");
+
           if(req.session.uid === undefined)
           {
                  console.log('Create Session !!!');
                  var guid         =   uuid.v1();
                  req.session.uid  =   guid; 
 
-                 ses.userssession(db, Models, client, 'anonim', guid, function(erro, addr) {
-                      //-- var log = fs.createWriteStream('session.txt', {'flags': 'a'}); 
-                      //-- log.end(util.inspect(that.req.session, false, null) + "\n");
+                 //res.send('New session is: ', req.session.uid);
+
+                 ses.userssession(db, Models, client, 'anonim', guid, function(err, result) {                        
+                        
+                        if(err) { console.log('Session Error'); };
+                        
+                        console.log('Session inserted into database !!!', result );
+                        res.sendfile('web/main.html');
+                        //res.send('Create new session');
                  });
+
+          }else{
+
+                res.sendfile("web/main.html");
+                //res.send('OK !!!');
+                //res.send('session exists !!!');
           }
-        
-        res.sendfile("web/main.html");  
+      
+            
+
    });
 
 
- app.get('/api/bets', function(req, res)
- {
+ app.get('/api/bets', function(req, res) {
       res.send(betData); 
-
-      // test message only !1!
-      // connections[req.session.uid].emit('testmessage ', 'Hiiii  Hidden user !!!!');       
-      // io.sockets.emit('testmessage', 'Hi New User connected to system !!!');
-    
  });
-
-
- app.get('/getbets', function(req, res){
-
-      bets.getcurrentOddsList(db, function(err, doc){
-            if(err) {  res.send(err) }          
-      });
-
-      res.send('Ok !!!');
- });
-
-app.get('/newgame', function(req, res){
-
-        //console.log('Call create new Game Function'); 
-        bets.CreateNewGame(db,  function(err, result){
-            
-            currentcoefs = result.bets;
-            betsData = { "gameID": result.gameId, "desk": result.desk  };
-            res.send(betsData);
-        });
-
-          //-- var log = fs.createWriteStream('session.txt', {'flags': 'a'}); 
-          //-- log.end(util.inspect(connections, false, null) + "\n");
-  });
 
 
 
@@ -190,7 +177,6 @@ app.get('/newgame', function(req, res){
 
                     if(response.DeliveryStatus  === 0)
                     {
-
                         var obj = _.findWhere(connections, { session: response.UserSession });
                         console.log('Soocket Object:', obj);
 
@@ -212,11 +198,14 @@ app.get('/newgame', function(req, res){
 
           res.send('Ok');
 
-  });
+ });
+
+
 
 
 //-- Socket !
 io.set('authorization', ioSession(express.cookieParser(sessionKey), memoryStore));
+
 var connections = [];  
 
 // Good article about  Expressjs and Socket.io Push notifications 
@@ -273,8 +262,7 @@ io.sockets.on('connection', function (socket) {
                 }
 
 
-                ////// betData.desk[data.id] = currentcoefs[data.id]; ////  Double bet Problem !!! 
-                
+                ////// betData.desk[data.id] = currentcoefs[data.id]; ////  Double bet Problem !!!                 
                 //-- Place Bet                             
                 slips.PlaceBet(db, Models, client, clientSession, currentcoefs, data, betData, function(err, result){                    
 
@@ -285,7 +273,7 @@ io.sockets.on('connection', function (socket) {
                           {
                                   //console.log('We need to start new game !!!');                                                                    
                                   StartnewGame(function(err){
-                                      io.sockets.emit('firstload', betData);  
+                                      io.sockets.emit('newgame', betData);  
                                   });                              
                           }
 
@@ -304,7 +292,7 @@ io.sockets.on('connection', function (socket) {
                                 var coef    = currentcoefs[data.id];                               
                                 betData.desk[data.id] = coef; //-- Put open button coef on emty desk --//
                               
-
+                              
                               //-- Generate bet responce Message For Client 
                               var betresponce = { 
 

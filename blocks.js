@@ -19,15 +19,20 @@ var client = new bitcoin.Client({
           host: 'localhost',
           //port: 8332,
           port: 18332,
-          user: 'testuser',
-          pass: 'testpass'
+          user: 'bitcoinrpc',
+          pass: '3VXSDdC69sQnd9c6xur1Nx77S7gyFwcc3ZFmJDfyt6cM'
  });
+
+
+
 
 
 
  client.cmd('getblockcount',  function(err, blocks){
 
+
         if(err)  {  return console.log(err); }
+
      		console.log('Total Blocks Count is : ', blocks);
 
   });         
