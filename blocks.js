@@ -1,8 +1,8 @@
-var async 			= require('async');
-var fs					= require('fs');
-var winston 		= require('winston');
-var bitcoin     = require('bitcoin');
-var _           = require('underscore');
+var async 	 = require('async');
+var fs		 = require('fs');
+var winston  = require('winston');
+var bitcoin  = require('bitcoin');
+var _        = require('underscore');
 
 
 
@@ -19,17 +19,14 @@ var client = new bitcoin.Client({
           host: 'localhost',
           //port: 8332,
           port: 18332,
-          user: 'bitcoinrpc',
-          pass: '3VXSDdC69sQnd9c6xur1Nx77S7gyFwcc3ZFmJDfyt6cM'
+          user: 'testuser',
+          pass: 'testpass'
  });
 
 
 
 
-
-
  client.cmd('getblockcount',  function(err, blocks){
-
 
         if(err)  {  return console.log(err); }
 
