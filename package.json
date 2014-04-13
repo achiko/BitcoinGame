@@ -1,0 +1,31 @@
+{
+  "name": "satoshibuttons",
+  "version": "1.0.0",
+  "description": "Button Grid Games",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Bitcoin",
+    "Bitcoin",
+    "Game",
+    "Bitcoin",
+    "Client",
+    "RPC"
+  ],
+  "author": "Archil Phanchulidze",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~3.4.8",
+    "underscore": "~1.6.0",
+    "node-uuid": "~1.4.1",
+    "mongoose": "~3.8.8",
+    "bitcoin": "~2.1.1",
+    "connect-mongo": "~0.4.0",
+    "socket.io": "~0.9.16",
+    "socket.io-session": "0.0.5",
+    "async": "~0.7.0",
+    "winston": "~0.7.3"
+  }
+}
